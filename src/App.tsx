@@ -8,13 +8,17 @@
  * @format
  */
 
-import React, {useEffect, useState} from 'react';
+import React from 'react';
+import {Provider} from 'react-redux';
+import {createStore, applyMiddleware} from 'redux';
+import thunk from 'redux-thunk';
+import rootReducer from './store';
 import Mainnavigator from './navigation/BaseNav';
 import Splash from './components/Splash';
 
-const App = () => {
-  const [isLoading, setIsLoading] = useState(true);
+const store = createStore(rootReducer, applyMiddleware(thunk));
 
+const App = () => {
   // useEffect(() => {
   //   // Simulate an asynchronous task
   //   setTimeout(() => {
@@ -25,7 +29,11 @@ const App = () => {
   // if (isLoading) {
   //   return <Splash />;
   // }
-  return <Mainnavigator></Mainnavigator>;
+  return (
+    <Provider store={store}>
+      <Mainnavigator></Mainnavigator>
+    </Provider>
+  );
 };
 
 export default App;

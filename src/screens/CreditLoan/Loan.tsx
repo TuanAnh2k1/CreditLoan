@@ -8,6 +8,9 @@ const Loan = (props: {navigation: any}) => {
   const handleEditInfo = () => {
     navigation.navigate('FormRegister');
   };
+  const handleLogin = () => {
+    navigation.navigate('LoginScreen');
+  };
   return (
     <View style={styles.container}>
       <View style={styles.menuContainer}>
@@ -20,7 +23,7 @@ const Loan = (props: {navigation: any}) => {
           </View>
           <Text style={styles.textItem}>Vay Online</Text>
         </Pressable>
-        <View style={styles.itemMenu}>
+        <Pressable style={styles.itemMenu} onPress={handleLogin}>
           <View style={styles.viewImage}>
             <Image
               source={require('../../assets/online-payment.png')}
@@ -28,7 +31,7 @@ const Loan = (props: {navigation: any}) => {
             />
           </View>
           <Text style={styles.textItem}>Thanh toán</Text>
-        </View>
+        </Pressable>
         <View style={styles.itemMenu}>
           <View style={styles.viewImage}>
             <Image

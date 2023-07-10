@@ -15,6 +15,7 @@ import Profile from '../screens/Profile/Profile';
 import ContactInfo from '../screens/Profile/ContactInfo/ContactInfo';
 import Loan from '../screens/CreditLoan/Loan';
 import FormRegister from '../screens/FormRegister/FormRegister';
+import LoginScreen from '../screens/LoginScreen';
 
 const Stack = createStackNavigator();
 
@@ -80,6 +81,11 @@ function StackNavigator() {
         options={{headerShown: false}}
         name="FormRegister"
         component={FormRegister}
+      />
+      <Stack.Screen
+        options={{headerShown: false}}
+        name="LoginScreen"
+        component={LoginScreen}
       />
     </Stack.Navigator>
   );
