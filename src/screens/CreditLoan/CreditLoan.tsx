@@ -17,7 +17,7 @@ const CreditLoan = (props: {navigation: any}) => {
   return (
     <View style={styles.container}>
       {/* Content of your current tab */}
-      {selectedTab === 'Trang chủ' && <Loan />}
+      {selectedTab === 'Trang chủ' && <Loan navigation={navigation} />}
       {selectedTab === 'Khoản vay' && (
         <View style={styles.tabContent}>
           <Text>Content of Khoản vay</Text>
@@ -28,7 +28,7 @@ const CreditLoan = (props: {navigation: any}) => {
           <Text>Content of Thẻ</Text>
         </View>
       )}
-      {selectedTab === 'Cá nhân' && <Profile />}
+      {selectedTab === 'Cá nhân' && <Profile navigation={navigation} />}
 
       {/* Tabbar */}
       <Tabbar

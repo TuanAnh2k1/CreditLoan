@@ -1,13 +1,17 @@
 import React from 'react';
-import {StyleSheet, View, Text, Image} from 'react-native';
+import {StyleSheet, View, Text, Image, Pressable} from 'react-native';
 import GetColors from '../../utils/CommonColors';
 import Swiper from 'react-native-swiper';
 
-const Loan = () => {
+const Loan = (props: {navigation: any}) => {
+  const {navigation} = props;
+  const handleEditInfo = () => {
+    navigation.navigate('FormRegister');
+  };
   return (
     <View style={styles.container}>
       <View style={styles.menuContainer}>
-        <View style={styles.itemMenu}>
+        <Pressable style={styles.itemMenu} onPress={handleEditInfo}>
           <View style={styles.viewImage}>
             <Image
               source={require('../../assets/loan.png')}
@@ -15,7 +19,7 @@ const Loan = () => {
             />
           </View>
           <Text style={styles.textItem}>Vay Online</Text>
-        </View>
+        </Pressable>
         <View style={styles.itemMenu}>
           <View style={styles.viewImage}>
             <Image

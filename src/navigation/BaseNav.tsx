@@ -11,6 +11,10 @@ import SignInScreen from '../screens/SignInScreen';
 import SignUpScreen from '../screens/SignUpScreen';
 import Tutorial from '../screens/Tutorial/Tutorial';
 import CreditLoan from '../screens/CreditLoan/CreditLoan';
+import Profile from '../screens/Profile/Profile';
+import ContactInfo from '../screens/Profile/ContactInfo/ContactInfo';
+import Loan from '../screens/CreditLoan/Loan';
+import FormRegister from '../screens/FormRegister/FormRegister';
 
 const Stack = createStackNavigator();
 
@@ -56,6 +60,26 @@ function StackNavigator() {
         options={{headerShown: false}}
         name="Tutorial"
         component={Tutorial}
+      />
+      <Stack.Screen
+        options={{headerShown: false}}
+        name="Loan"
+        component={Loan}
+      />
+      <Stack.Screen
+        options={{headerShown: false}}
+        name="Proflie"
+        component={Profile}
+      />
+      <Stack.Screen
+        options={{headerShown: false}}
+        name="ContactInfo"
+        component={ContactInfo}
+      />
+      <Stack.Screen
+        options={{headerShown: false}}
+        name="FormRegister"
+        component={FormRegister}
       />
     </Stack.Navigator>
   );

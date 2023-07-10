@@ -1,9 +1,13 @@
 import React from 'react';
-import {Image, StyleSheet, Text, View} from 'react-native';
+import {Image, Pressable, StyleSheet, Text, View} from 'react-native';
 import GetColors from '../../utils/CommonColors';
 import {ScrollView} from 'react-native-gesture-handler';
 
-const Profile = () => {
+const Profile = (props: {navigation: any}) => {
+  const {navigation} = props;
+  const handleEditInfo = () => {
+    navigation.navigate('ContactInfo');
+  };
   return (
     <ScrollView style={styles.container}>
       <View style={styles.containerNavbar}>
@@ -35,10 +39,12 @@ const Profile = () => {
       <View style={styles.content}>
         <View style={styles.header}>
           <Text style={styles.textHeader}>THÔNG TIN LIÊN HỆ</Text>
-          <Image
-            source={require('../../assets/edit.png')}
-            style={styles.imageEdit}
-          />
+          <Pressable onPress={handleEditInfo}>
+            <Image
+              source={require('../../assets/edit.png')}
+              style={styles.imageEdit}
+            />
+          </Pressable>
         </View>
         <View style={styles.header}>
           <Image
