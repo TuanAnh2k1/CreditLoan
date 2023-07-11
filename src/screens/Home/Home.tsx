@@ -2,7 +2,6 @@ import React, {useEffect, useState} from 'react';
 import {Button, Image, StyleSheet, Text, View} from 'react-native';
 import GetColors from '../../utils/CommonColors';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import Loading from '../../components/Loading';
 const Home = (props: {navigation: any}) => {
   const {navigation} = props;
   const [loading, setLoading] = useState(Boolean);

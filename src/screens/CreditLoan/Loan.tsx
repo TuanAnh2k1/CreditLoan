@@ -11,6 +11,9 @@ const Loan = (props: {navigation: any}) => {
   const handleLogin = () => {
     navigation.navigate('LoginScreen');
   };
+  const handleSupport = () => {
+    navigation.navigate('Support');
+  };
   return (
     <View style={styles.container}>
       <View style={styles.menuContainer}>
@@ -32,7 +35,7 @@ const Loan = (props: {navigation: any}) => {
           </View>
           <Text style={styles.textItem}>Thanh toán</Text>
         </Pressable>
-        <View style={styles.itemMenu}>
+        <Pressable style={styles.itemMenu} onPress={handleSupport}>
           <View style={styles.viewImage}>
             <Image
               source={require('../../assets/customer-support.png')}
@@ -40,7 +43,7 @@ const Loan = (props: {navigation: any}) => {
             />
           </View>
           <Text style={styles.textItem}>Hỗ trợ</Text>
-        </View>
+        </Pressable>
         <View style={styles.itemMenu} />
       </View>
       <View style={styles.slideShow}>
