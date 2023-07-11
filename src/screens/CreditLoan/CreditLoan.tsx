@@ -1,7 +1,5 @@
 import React, {useState} from 'react';
-import {Button, Image, StyleSheet, Text, View} from 'react-native';
-import GetColors from '../../utils/CommonColors';
-import NavBar from '../../components/NavBar';
+import {StyleSheet, Text, View} from 'react-native';
 import Tabbar from '../../components/TabBar';
 import Loan from './Loan';
 import Profile from '../Profile/Profile';
