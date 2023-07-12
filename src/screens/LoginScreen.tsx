@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {View, TextInput, Button, Text, StyleSheet} from 'react-native';
 import {connect, ConnectedProps} from 'react-redux';
 import {RootState} from '../store';
-import {login} from '../store/actions';
+import {login} from '../store/actions/actions';
 
 const connector = connect(
   (state: RootState) => ({

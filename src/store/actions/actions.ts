@@ -41,7 +41,7 @@ export const login = (username: string, password: string) => {
         // Xử lý lỗi
         dispatch(loginFailure(data.error));
       }
-    } catch (error) {
+    } catch (error: any) {
       // Xử lý lỗi kết nối
       dispatch(loginFailure(error.message));
     }

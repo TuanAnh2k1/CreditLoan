@@ -3,21 +3,41 @@ import {
   View,
   Text,
   TextInput,
-  TouchableOpacity,
   StyleSheet,
   Image,
   Pressable,
   LogBox,
+  Linking,
 } from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
 import GetColors from '../../utils/CommonColors';
 import {ScrollView} from 'react-native-gesture-handler';
 import {NavBar} from '../../components';
 import CheckBox from '../../components/CheckBox';
+import {connect, ConnectedProps} from 'react-redux';
+import {RootState} from '../../store';
+import {register} from '../../store/actions/formActions';
 
-const FormRegister = (props: {navigation: any}) => {
-  const {navigation} = props;
+const connector = connect(
+  (state: RootState) => ({
+    isLoading: state.registration,
+    error: state.registration,
+  }),
+  {register},
+);
 
+type PropsFromRedux = ConnectedProps<typeof connector>;
+
+type Props = PropsFromRedux & {
+  navigation: any;
+};
+
+const FormRegister: React.FC<Props> = ({
+  navigation,
+  isLoading,
+  error,
+  register,
+}) => {
   const [prefix, setPrefix] = useState('');
   const [fullName, setFullName] = useState('');
   const [identification, setIdentification] = useState('');
@@ -36,6 +56,30 @@ const FormRegister = (props: {navigation: any}) => {
   const [isCheckedSMS, setIsCheckedSMS] = useState(false);
   const [isCheckedTelevision, setIsCheckedTelevision] = useState(false);
   const [isCheckedTerm, setIsCheckedTerm] = useState(false);
+
+  //check isNull
+
+  const [isFullNameValid, setIsFullNameValid] = useState(true);
+  const [isIdentification, setIsIdentification] = useState(true);
+  const [isAddress, setIsAddress] = useState(true);
+  const [isPhoneNumber, setIsPhoneNumber] = useState(true);
+  const [isEmail, setIsEmail] = useState(true);
+
+  //data
+  const [formData, setFormData] = useState({
+    fullName: '',
+    identification: '',
+    address: '',
+    phoneNumber: '',
+    email: '',
+    occupation: '',
+    income: '',
+    products: '',
+    price: '',
+    date: '',
+    isCheckedAddress: false,
+    isCheckedTerm: false,
+  });
 
   useEffect(() => {
     LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
@@ -71,8 +115,26 @@ const FormRegister = (props: {navigation: any}) => {
   const [openProducts, setOpenProducts] = useState(false);
 
   const handleRegistration = () => {
-    // Xử lý đăng ký ở đây
-    // Bạn có thể truy cập dữ liệu biểu mẫu bằng cách sử dụng các biến state
+    switch (true) {
+      case fullName === '':
+        setIsFullNameValid(false);
+        break;
+      case identification === '':
+        setIsIdentification(false);
+        break;
+      case address === '':
+        setIsAddress(false);
+        break;
+      case phoneNumber === '':
+        setIsPhoneNumber(false);
+        break;
+      case email === '':
+        setIsEmail(false);
+        break;
+      default:
+        register(formData);
+        break;
+    }
   };
 
   const handleCheckboxChange = () => {
@@ -93,6 +155,20 @@ const FormRegister = (props: {navigation: any}) => {
 
   const handleChangeTerm = () => {
     setIsCheckedTerm(!isCheckedTerm);
+  };
+
+  const handlePressTerm = async () => {
+    const url = 'https://ebank.bidv.com.vn/DKNHDT/term.htm'; // Thay thế bằng URL điều khoản của bạn
+
+    // Kiểm tra xem thiết bị có hỗ trợ WebView hay không
+    if (await Linking.canOpenURL(url)) {
+      // Mở WebView để hiển thị liên kết
+      return Linking.openURL(url);
+    }
+
+    // Thiết bị không hỗ trợ WebView, xử lý theo cách khác
+    // Ví dụ: mở liên kết trong trình duyệt mặc định
+    return Linking.openURL(url);
   };
 
   return (
@@ -127,10 +203,16 @@ const FormRegister = (props: {navigation: any}) => {
           </View>
           <TextInput
             value={fullName}
-            onChangeText={text => setFullName(text)}
+            onChangeText={text => {
+              setFullName(text);
+              setIsFullNameValid(text.trim() !== ''); // Kiểm tra giá trị không rỗng
+            }}
             placeholder="Nhập họ và tên"
-            style={styles.input}
+            style={[styles.input, !isFullNameValid && styles.invalidInput]}
           />
+          {!isFullNameValid && (
+            <Text style={styles.errorText}>Vui lòng nhập họ và tên</Text>
+          )}
         </View>
 
         <View style={styles.formGroupText}>
@@ -140,10 +222,17 @@ const FormRegister = (props: {navigation: any}) => {
           </View>
           <TextInput
             value={identification}
-            onChangeText={text => setIdentification(text)}
+            onChangeText={text => {
+              setIdentification(text);
+              setIsIdentification(text.trim() !== ''); // Kiểm tra giá trị không rỗng
+            }}
             placeholder="Nhập số CMT/hộ chiếu"
-            style={styles.input}
+            keyboardType="numeric"
+            style={[styles.input, !isIdentification && styles.invalidInput]}
           />
+          {!isIdentification && (
+            <Text style={styles.errorText}>Vui lòng nhập số CMT/hộ chiếu</Text>
+          )}
         </View>
 
         <View style={styles.formGroupText}>
@@ -153,9 +242,12 @@ const FormRegister = (props: {navigation: any}) => {
           </View>
           <TextInput
             value={address}
-            onChangeText={text => setAddress(text)}
+            onChangeText={text => {
+              setAddress(text);
+              setIsAddress(text.trim() !== ''); // Kiểm tra giá trị không rỗng
+            }}
             placeholder="Nhập địa chỉ"
-            style={styles.input}
+            style={[styles.input, !isAddress && styles.invalidInput]}
           />
           <View style={styles.fomart}>
             <Image
@@ -166,6 +258,9 @@ const FormRegister = (props: {navigation: any}) => {
               Định dạng: "Số nhà - Đường - Phường/Xã - Quận/Huyện - Tỉnh/thành"
             </Text>
           </View>
+          {!isAddress && (
+            <Text style={styles.errorText}>Vui lòng nhập địa chỉ</Text>
+          )}
         </View>
 
         <View style={styles.formGroupText}>
@@ -175,10 +270,17 @@ const FormRegister = (props: {navigation: any}) => {
           </View>
           <TextInput
             value={phoneNumber}
-            onChangeText={text => setPhoneNumber(text)}
+            onChangeText={text => {
+              setPhoneNumber(text);
+              setIsPhoneNumber(text.trim() !== ''); // Kiểm tra giá trị không rỗng
+            }}
             placeholder="Nhập số điện thoại"
-            style={styles.input}
+            keyboardType="numeric"
+            style={[styles.input, !isPhoneNumber && styles.invalidInput]}
           />
+          {!isPhoneNumber && (
+            <Text style={styles.errorText}>Vui lòng nhập số điện thoại</Text>
+          )}
         </View>
 
         <View style={styles.formGroupText}>
@@ -188,10 +290,16 @@ const FormRegister = (props: {navigation: any}) => {
           </View>
           <TextInput
             value={email}
-            onChangeText={text => setEmail(text)}
+            onChangeText={text => {
+              setEmail(text);
+              setIsEmail(text.trim() !== ''); // Kiểm tra giá trị không rỗng
+            }}
             placeholder="Nhập email"
-            style={styles.input}
+            style={[styles.input, !isEmail && styles.invalidInput]}
           />
+          {!isEmail && (
+            <Text style={styles.errorText}>Vui lòng nhập email</Text>
+          )}
         </View>
 
         <View style={styles.formGroup}>
@@ -201,6 +309,7 @@ const FormRegister = (props: {navigation: any}) => {
           </View>
           <DropDownPicker
             containerStyle={styles.pickerContainer}
+            placeholder="Chọn"
             open={openOccupation}
             value={occupation}
             items={itemsOccupation}
@@ -217,6 +326,7 @@ const FormRegister = (props: {navigation: any}) => {
           </View>
           <DropDownPicker
             containerStyle={styles.pickerContainer}
+            placeholder="Chọn"
             open={openIncome}
             value={income}
             items={itemsIncome}
@@ -236,6 +346,7 @@ const FormRegister = (props: {navigation: any}) => {
           </View>
           <DropDownPicker
             containerStyle={styles.pickerContainer}
+            placeholder="Chọn"
             open={openProducts}
             value={products}
             items={itemsProducts}
@@ -249,8 +360,9 @@ const FormRegister = (props: {navigation: any}) => {
             <Text style={styles.labelText}>Số tiền vay dự kiến </Text>
           </View>
           <TextInput
-            value={price}
-            onChangeText={text => setPrice(text)}
+            value={price ? parseInt(price, 10).toLocaleString('vi-VN') : ''}
+            keyboardType="numeric"
+            onChangeText={text => setPrice(text.replace(/[^0-9]/g, ''))}
             style={styles.input}
           />
           <Text style={styles.labelText}>VNĐ </Text>
@@ -261,6 +373,7 @@ const FormRegister = (props: {navigation: any}) => {
           </View>
           <TextInput
             value={date}
+            keyboardType="numeric"
             onChangeText={text => setDate(text)}
             style={styles.input}
           />
@@ -344,16 +457,25 @@ const FormRegister = (props: {navigation: any}) => {
         <View style={styles.contentCaptcha}>
           <View style={styles.checkboxContainer}>
             <CheckBox
-              title="Tôi đồng ý với các điều khoản điều kiện đăng ký dịch vụ của BIDV"
+              title=""
               value={isCheckedTerm}
               onValueChange={handleChangeTerm}
             />
+            <Pressable style={styles.contentTerm} onPress={handlePressTerm}>
+              <Text style={styles.text}>
+                Tôi đồng ý với{' '}
+                <Text style={styles.highlightedText}>điều khoản điều kiện</Text>{' '}
+                đăng ký dịch vụ
+              </Text>
+            </Pressable>
           </View>
         </View>
       </ScrollView>
-      <TouchableOpacity onPress={handleRegistration} style={styles.button}>
+      <Pressable onPress={handleRegistration} style={styles.button}>
         <Text style={styles.buttonText}>Đăng ký</Text>
-      </TouchableOpacity>
+      </Pressable>
+      {isLoading && <Text>Loading...</Text>}
+      {error && <Text>{error}</Text>}
     </>
   );
 };
@@ -368,21 +490,18 @@ const styles = StyleSheet.create({
   },
   formGroupText: {
     paddingHorizontal: 16,
-    paddingVertical: 8,
     backgroundColor: GetColors().WHITE,
     paddingBottom: 10,
     zIndex: -5,
   },
   formGroupIncome: {
     paddingHorizontal: 16,
-    paddingVertical: 8,
     backgroundColor: GetColors().WHITE,
     paddingBottom: 10,
     zIndex: -4,
   },
   formGroupProducts: {
     paddingHorizontal: 16,
-    paddingVertical: 8,
     backgroundColor: GetColors().WHITE,
     paddingBottom: 10,
     zIndex: -6,
@@ -440,6 +559,12 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
     borderRadius: 8,
   },
+  invalidInput: {
+    borderColor: GetColors().RED500,
+  },
+  errorText: {
+    color: GetColors().RED500,
+  },
   pickerContainer: {
     marginBottom: 8,
     height: 40,
@@ -488,6 +613,20 @@ const styles = StyleSheet.create({
     fontSize: 12,
     paddingHorizontal: 4,
   },
+  contentTerm: {
+    flex: 1,
+    paddingRight: 4,
+    justifyContent: 'center',
+  },
+  text: {
+    color: 'black',
+    fontSize: 16,
+    flexWrap: 'wrap',
+  },
+  highlightedText: {
+    color: '#0873ee',
+    fontWeight: 'bold',
+  },
 });
 
-export default FormRegister;
+export default connector(FormRegister);
