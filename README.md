@@ -38,3 +38,12 @@ Một số loại type thường dùng:
    Ví dụ: `git commit -m "feat(js): implement create appliance"`
 1. `fix` : Sử dụng khi thực hiện fix bug.
    Ví dụ: `git commit -m "fix(js): fix create appliance don't search"`
+
+- Commit code như sau
+  tên nhánh: tên/đuôi task
+  vd: anhdt/SQBTAU0w
+  tên commit: đuôi task: nội dung commit
+
+- tên pull request thì như sau
+  ngày/đuôi task
+  vd 20230714/SQBTAU0w
