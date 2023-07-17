@@ -1,31 +1,26 @@
 // ValidationFunctions.ts
 
+export const NAME_REGEX = /^[a-zA-Z ]+$/;
+export const ID_REGEX = /^\d+$/;
+export const PHONE_REGEX = /\s/g;
+export const EMAIL_REGEX = /^\S+@\S+\.\S+$/;
+
 export function validateName(name: string): boolean {
-  // Kiểm tra logic và trả về true hoặc false tùy thuộc vào sự hợp lệ của tên
-  // Ví dụ:
-  return /^[a-zA-Z ]+$/.test(name);
+  return NAME_REGEX.test(name);
 }
 
 export function validateID(id: string): boolean {
-  // Kiểm tra logic và trả về true hoặc false tùy thuộc vào sự hợp lệ của CCCD/Hộ chiếu
-  // Ví dụ:
-  return /^\d+$/.test(id);
+  return ID_REGEX.test(id);
 }
 
 export function normalizeAddress(address: string): string {
-  // Chuẩn hóa địa chỉ và trả về địa chỉ đã chuẩn hóa
-  // Ví dụ:
   return address.trim();
 }
 
 export function normalizePhoneNumber(phoneNumber: string): string {
-  // Chuẩn hóa số điện thoại và trả về số điện thoại đã chuẩn hóa
-  // Ví dụ:
-  return phoneNumber.replace(/\s/g, '');
+  return phoneNumber.replace(PHONE_REGEX, '');
 }
 
 export function validateEmail(email: string): boolean {
-  // Kiểm tra logic và trả về true hoặc false tùy thuộc vào sự hợp lệ của email
-  // Ví dụ:
-  return /^\S+@\S+\.\S+$/.test(email);
+  return EMAIL_REGEX.test(email);
 }

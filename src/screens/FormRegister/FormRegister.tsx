@@ -9,6 +9,7 @@ import {
   LogBox,
   Linking,
 } from 'react-native';
+import _ from 'lodash';
 import DropDownPicker from 'react-native-dropdown-picker';
 import GetColors from '../../utils/CommonColors';
 import {ScrollView} from 'react-native-gesture-handler';
@@ -17,6 +18,7 @@ import CheckBox from '../../components/CheckBox';
 import {connect, ConnectedProps} from 'react-redux';
 import {RootState} from '../../store';
 import {register} from '../../store/actions/formActions';
+import {TERM_URL} from '../../AppConstants/AppConstants';
 
 const connector = connect(
   (state: RootState) => ({
@@ -116,19 +118,19 @@ const FormRegister: React.FC<Props> = ({
 
   const handleRegistration = () => {
     switch (true) {
-      case fullName === '':
+      case _.isEmpty(fullName):
         setIsFullNameValid(false);
         break;
-      case identification === '':
+      case _.isEmpty(identification):
         setIsIdentification(false);
         break;
-      case address === '':
+      case _.isEmpty(address):
         setIsAddress(false);
         break;
-      case phoneNumber === '':
+      case _.isEmpty(phoneNumber):
         setIsPhoneNumber(false);
         break;
-      case email === '':
+      case _.isEmpty(email):
         setIsEmail(false);
         break;
       default:
@@ -158,16 +160,12 @@ const FormRegister: React.FC<Props> = ({
   };
 
   const handlePressTerm = async () => {
-    const url = 'https://ebank.bidv.com.vn/DKNHDT/term.htm'; // Thay thế bằng URL điều khoản của bạn
+    const url = TERM_URL;
 
-    // Kiểm tra xem thiết bị có hỗ trợ WebView hay không
     if (await Linking.canOpenURL(url)) {
-      // Mở WebView để hiển thị liên kết
       return Linking.openURL(url);
     }
 
-    // Thiết bị không hỗ trợ WebView, xử lý theo cách khác
-    // Ví dụ: mở liên kết trong trình duyệt mặc định
     return Linking.openURL(url);
   };
 
@@ -205,7 +203,7 @@ const FormRegister: React.FC<Props> = ({
             value={fullName}
             onChangeText={text => {
               setFullName(text);
-              setIsFullNameValid(text.trim() !== ''); // Kiểm tra giá trị không rỗng
+              setIsFullNameValid(!_.isEmpty(text.trim()));
             }}
             placeholder="Nhập họ và tên"
             style={[styles.input, !isFullNameValid && styles.invalidInput]}
@@ -224,7 +222,7 @@ const FormRegister: React.FC<Props> = ({
             value={identification}
             onChangeText={text => {
               setIdentification(text);
-              setIsIdentification(text.trim() !== ''); // Kiểm tra giá trị không rỗng
+              setIsIdentification(!_.isEmpty(text.trim()));
             }}
             placeholder="Nhập số CMT/hộ chiếu"
             keyboardType="numeric"
@@ -244,7 +242,7 @@ const FormRegister: React.FC<Props> = ({
             value={address}
             onChangeText={text => {
               setAddress(text);
-              setIsAddress(text.trim() !== ''); // Kiểm tra giá trị không rỗng
+              setIsAddress(!_.isEmpty(text.trim()));
             }}
             placeholder="Nhập địa chỉ"
             style={[styles.input, !isAddress && styles.invalidInput]}
@@ -272,7 +270,7 @@ const FormRegister: React.FC<Props> = ({
             value={phoneNumber}
             onChangeText={text => {
               setPhoneNumber(text);
-              setIsPhoneNumber(text.trim() !== ''); // Kiểm tra giá trị không rỗng
+              setIsPhoneNumber(!_.isEmpty(text.trim()));
             }}
             placeholder="Nhập số điện thoại"
             keyboardType="numeric"
@@ -292,7 +290,7 @@ const FormRegister: React.FC<Props> = ({
             value={email}
             onChangeText={text => {
               setEmail(text);
-              setIsEmail(text.trim() !== ''); // Kiểm tra giá trị không rỗng
+              setIsEmail(!_.isEmpty(text.trim()));
             }}
             placeholder="Nhập email"
             style={[styles.input, !isEmail && styles.invalidInput]}
