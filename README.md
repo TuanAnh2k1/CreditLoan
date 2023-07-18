@@ -47,3 +47,6 @@ Một số loại type thường dùng:
 - tên pull request thì như sau
   ngày/đuôi task
   vd 20230714/SQBTAU0w
+  Run unittest
+
+- yarn test

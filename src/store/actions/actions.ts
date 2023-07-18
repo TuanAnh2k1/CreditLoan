@@ -1,6 +1,7 @@
 // store/actions.ts
 import {Dispatch} from 'redux';
 import {LOGIN_REQUEST, LOGIN_SUCCESS, LOGIN_FAILURE} from './actionTypes';
+import {LOGIN_URL} from '../../AppConstants/AppConstants';
 
 export const loginRequest = () => ({
   type: LOGIN_REQUEST,
@@ -21,9 +22,9 @@ export const login = (username: string, password: string) => {
     dispatch(loginRequest());
 
     try {
-      // Gọi API đăng nhập
+      console.log(LOGIN_URL);
 
-      const response = await fetch('https://musicfivestar.onrender.com/login', {
+      const response = await fetch(LOGIN_URL, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -34,15 +35,12 @@ export const login = (username: string, password: string) => {
       const data = await response.json();
 
       if (response.ok) {
-        // Xử lý thành công
         dispatch(loginSuccess(data.user));
         console.log(data.user);
       } else {
-        // Xử lý lỗi
         dispatch(loginFailure(data.error));
       }
     } catch (error: any) {
-      // Xử lý lỗi kết nối
       dispatch(loginFailure(error.message));
     }
   };

@@ -5,6 +5,7 @@ import {
   FORM_SUBMIT_SUCCESS,
   FORM_SUBMIT_ERROR,
 } from './actionTypes';
+import {REGISTER_URL} from '../../AppConstants/AppConstants';
 
 export const registerRequest = () => ({
   type: FORM_SUBMIT_REQUEST,
@@ -24,29 +25,22 @@ export const register = (formData: any) => {
     dispatch(registerRequest());
 
     try {
-      // Gọi API đăng ký
-      const response = await fetch(
-        'https://musicfivestar.onrender.com/register',
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(formData),
+      const response = await fetch(REGISTER_URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
         },
-      );
+        body: JSON.stringify(formData),
+      });
 
       const data = await response.json();
 
       if (response.ok) {
-        // Xử lý thành công
         dispatch(registerSuccess());
       } else {
-        // Xử lý lỗi
         dispatch(registerFailure(data.error));
       }
     } catch (error: any) {
-      // Xử lý lỗi kết nối
       dispatch(registerFailure(error.message));
     }
   };
