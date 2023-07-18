@@ -1,33 +1,34 @@
 // store/reducer.ts
-import {LOGIN_REQUEST, LOGIN_SUCCESS, LOGIN_FAILURE} from './actionTypes';
+import {
+  FORM_SUBMIT_REQUEST,
+  FORM_SUBMIT_SUCCESS,
+  FORM_SUBMIT_ERROR,
+} from '../actions/actionTypes';
 
-interface AuthState {
+interface RegistrationState {
   isLoading: boolean;
-  user: any | null;
   error: string | null;
 }
 
-const initialState: AuthState = {
+const initialState: RegistrationState = {
   isLoading: false,
-  user: null,
   error: null,
 };
 
-const authReducer = (state = initialState, action: any) => {
+const registrationReducer = (state = initialState, action: any) => {
   switch (action.type) {
-    case LOGIN_REQUEST:
+    case FORM_SUBMIT_REQUEST:
       return {
         ...state,
         isLoading: true,
         error: null,
       };
-    case LOGIN_SUCCESS:
+    case FORM_SUBMIT_SUCCESS:
       return {
         ...state,
         isLoading: false,
-        user: action.payload,
       };
-    case LOGIN_FAILURE:
+    case FORM_SUBMIT_ERROR:
       return {
         ...state,
         isLoading: false,
@@ -38,4 +39,4 @@ const authReducer = (state = initialState, action: any) => {
   }
 };
 
-export default authReducer;
+export default registrationReducer;

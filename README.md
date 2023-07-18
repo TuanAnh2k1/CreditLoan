@@ -38,3 +38,7 @@ Một số loại type thường dùng:
    Ví dụ: `git commit -m "feat(js): implement create appliance"`
 1. `fix` : Sử dụng khi thực hiện fix bug.
    Ví dụ: `git commit -m "fix(js): fix create appliance don't search"`
+
+Run unittest
+
+- yarn test

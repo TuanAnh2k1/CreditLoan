@@ -1,0 +1,10 @@
+// store/actionTypes.ts
+export const LOGIN_REQUEST = 'LOGIN_REQUEST';
+export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
+export const LOGIN_FAILURE = 'LOGIN_FAILURE';
+
+//form
+
+export const FORM_SUBMIT_REQUEST = 'FORM_SUBMIT_REQUEST';
+export const FORM_SUBMIT_SUCCESS = 'FORM_SUBMIT_SUCCESS';
+export const FORM_SUBMIT_ERROR = 'FORM_SUBMIT_ERROR';
