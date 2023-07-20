@@ -19,11 +19,12 @@ import {connect, ConnectedProps} from 'react-redux';
 import {RootState} from '../../store';
 import {register} from '../../store/actions/formActions';
 import {TERM_URL} from '../../AppConstants/AppConstants';
+import i18 from '../../i18n';
 
 const connector = connect(
   (state: RootState) => ({
-    isLoading: state.registration,
-    error: state.registration,
+    isLoading: state.registration.isLoading,
+    error: state.registration.error,
   }),
   {register},
 );
@@ -171,20 +172,23 @@ const FormRegister: React.FC<Props> = ({
 
   return (
     <>
-      <NavBar title="Form Đăng Ký" onPressLeft={() => navigation.goBack()} />
+      <NavBar
+        title={i18.t('text.form_register')}
+        onPressLeft={() => navigation.goBack()}
+      />
       <ScrollView style={styles.container}>
         <View style={styles.menu}>
           <Text style={styles.menuId}>1</Text>
-          <Text style={styles.menuText}>Thông tin cá nhân</Text>
+          <Text style={styles.menuText}>{i18.t('text.info_profile')}</Text>
         </View>
         <View style={styles.formGroup}>
           <View style={styles.labelContent}>
-            <Text style={styles.labelText}>Danh xưng </Text>
+            <Text style={styles.labelText}>{i18.t('text.mr_mrs')} </Text>
             <Text style={styles.labelStar}>*</Text>
           </View>
           <DropDownPicker
             containerStyle={styles.pickerContainer}
-            placeholder="Ông"
+            placeholder={i18.t('text.mr')}
             open={openPrefix}
             value={prefix}
             items={itemsPrefix}
@@ -196,7 +200,7 @@ const FormRegister: React.FC<Props> = ({
 
         <View style={styles.formGroupText}>
           <View style={styles.labelContent}>
-            <Text style={styles.labelText}>Họ và tên </Text>
+            <Text style={styles.labelText}>{i18.t('text.full_name')} </Text>
             <Text style={styles.labelStar}>*</Text>
           </View>
           <TextInput
@@ -205,17 +209,19 @@ const FormRegister: React.FC<Props> = ({
               setFullName(text);
               setIsFullNameValid(!_.isEmpty(text.trim()));
             }}
-            placeholder="Nhập họ và tên"
+            placeholder={i18.t('text.input_full_name')}
             style={[styles.input, !isFullNameValid && styles.invalidInput]}
           />
           {!isFullNameValid && (
-            <Text style={styles.errorText}>Vui lòng nhập họ và tên</Text>
+            <Text style={styles.errorText}>
+              {i18.t('text.error_full_name')}
+            </Text>
           )}
         </View>
 
         <View style={styles.formGroupText}>
           <View style={styles.labelContent}>
-            <Text style={styles.labelText}>Số CMT/hộ chiếu </Text>
+            <Text style={styles.labelText}>{i18.t('text.identification')}</Text>
             <Text style={styles.labelStar}>*</Text>
           </View>
           <TextInput
@@ -224,18 +230,20 @@ const FormRegister: React.FC<Props> = ({
               setIdentification(text);
               setIsIdentification(!_.isEmpty(text.trim()));
             }}
-            placeholder="Nhập số CMT/hộ chiếu"
+            placeholder={i18.t('text.input_identification')}
             keyboardType="numeric"
             style={[styles.input, !isIdentification && styles.invalidInput]}
           />
           {!isIdentification && (
-            <Text style={styles.errorText}>Vui lòng nhập số CMT/hộ chiếu</Text>
+            <Text style={styles.errorText}>
+              {i18.t('text.error_identification')}
+            </Text>
           )}
         </View>
 
         <View style={styles.formGroupText}>
           <View style={styles.labelContent}>
-            <Text style={styles.labelText}>Địa chỉ </Text>
+            <Text style={styles.labelText}>{i18.t('text.address')} </Text>
             <Text style={styles.labelStar}>*</Text>
           </View>
           <TextInput
@@ -244,7 +252,7 @@ const FormRegister: React.FC<Props> = ({
               setAddress(text);
               setIsAddress(!_.isEmpty(text.trim()));
             }}
-            placeholder="Nhập địa chỉ"
+            placeholder={i18.t('text.input_address')}
             style={[styles.input, !isAddress && styles.invalidInput]}
           />
           <View style={styles.fomart}>
@@ -253,17 +261,17 @@ const FormRegister: React.FC<Props> = ({
               style={styles.fomartImage}
             />
             <Text style={styles.fomartText}>
-              Định dạng: "Số nhà - Đường - Phường/Xã - Quận/Huyện - Tỉnh/thành"
+              {i18.t('text.format_address')}
             </Text>
           </View>
           {!isAddress && (
-            <Text style={styles.errorText}>Vui lòng nhập địa chỉ</Text>
+            <Text style={styles.errorText}>{i18.t('text.error_address')}</Text>
           )}
         </View>
 
         <View style={styles.formGroupText}>
           <View style={styles.labelContent}>
-            <Text style={styles.labelText}>Số điện thoại liên hệ </Text>
+            <Text style={styles.labelText}>{i18.t('text.phone_number')} </Text>
             <Text style={styles.labelStar}>*</Text>
           </View>
           <TextInput
@@ -272,18 +280,20 @@ const FormRegister: React.FC<Props> = ({
               setPhoneNumber(text);
               setIsPhoneNumber(!_.isEmpty(text.trim()));
             }}
-            placeholder="Nhập số điện thoại"
+            placeholder={i18.t('text.input_phone_number')}
             keyboardType="numeric"
             style={[styles.input, !isPhoneNumber && styles.invalidInput]}
           />
           {!isPhoneNumber && (
-            <Text style={styles.errorText}>Vui lòng nhập số điện thoại</Text>
+            <Text style={styles.errorText}>
+              {i18.t('text.error_phone_number')}
+            </Text>
           )}
         </View>
 
         <View style={styles.formGroupText}>
           <View style={styles.labelContent}>
-            <Text style={styles.labelText}>Email </Text>
+            <Text style={styles.labelText}>{i18.t('text.email')} </Text>
             <Text style={styles.labelStar}>*</Text>
           </View>
           <TextInput
@@ -292,22 +302,22 @@ const FormRegister: React.FC<Props> = ({
               setEmail(text);
               setIsEmail(!_.isEmpty(text.trim()));
             }}
-            placeholder="Nhập email"
+            placeholder={i18.t('text.input_email')}
             style={[styles.input, !isEmail && styles.invalidInput]}
           />
           {!isEmail && (
-            <Text style={styles.errorText}>Vui lòng nhập email</Text>
+            <Text style={styles.errorText}>{i18.t('text.error_email')}</Text>
           )}
         </View>
 
         <View style={styles.formGroup}>
           <View style={styles.labelContent}>
-            <Text style={styles.labelText}>Nghề nghiệp </Text>
+            <Text style={styles.labelText}>{i18.t('text.job')} </Text>
             <Text style={styles.labelStar}>*</Text>
           </View>
           <DropDownPicker
             containerStyle={styles.pickerContainer}
-            placeholder="Chọn"
+            placeholder={i18.t('text.choose')}
             open={openOccupation}
             value={occupation}
             items={itemsOccupation}
@@ -319,12 +329,14 @@ const FormRegister: React.FC<Props> = ({
 
         <View style={styles.formGroupIncome}>
           <View style={styles.labelContent}>
-            <Text style={styles.labelText}>Thu nhập bình quân </Text>
+            <Text style={styles.labelText}>
+              {i18.t('text.average_income')}{' '}
+            </Text>
             <Text style={styles.labelStar}>*</Text>
           </View>
           <DropDownPicker
             containerStyle={styles.pickerContainer}
-            placeholder="Chọn"
+            placeholder={i18.t('text.choose')}
             open={openIncome}
             value={income}
             items={itemsIncome}
@@ -335,16 +347,16 @@ const FormRegister: React.FC<Props> = ({
         </View>
         <View style={styles.menu2}>
           <Text style={styles.menuId}>2</Text>
-          <Text style={styles.menuText}>Thông tin đăng ký dịch vụ</Text>
+          <Text style={styles.menuText}>{i18.t('text.service_info')}</Text>
         </View>
         <View style={styles.formGroupProducts}>
           <View style={styles.labelContent}>
-            <Text style={styles.labelText}>Sản phẩm vay </Text>
+            <Text style={styles.labelText}>{i18.t('text.loan_products')} </Text>
             <Text style={styles.labelStar}>*</Text>
           </View>
           <DropDownPicker
             containerStyle={styles.pickerContainer}
-            placeholder="Chọn"
+            placeholder={i18.t('text.choose')}
             open={openProducts}
             value={products}
             items={itemsProducts}
@@ -355,7 +367,9 @@ const FormRegister: React.FC<Props> = ({
         </View>
         <View style={styles.formGroupText2}>
           <View style={styles.labelContent}>
-            <Text style={styles.labelText}>Số tiền vay dự kiến </Text>
+            <Text style={styles.labelText}>
+              {i18.t('text.estimated_loan')}{' '}
+            </Text>
           </View>
           <TextInput
             value={price ? parseInt(price, 10).toLocaleString('vi-VN') : ''}
@@ -367,7 +381,7 @@ const FormRegister: React.FC<Props> = ({
         </View>
         <View style={styles.formGroupText2}>
           <View style={styles.labelContent}>
-            <Text style={styles.labelText}>Thời gian vay </Text>
+            <Text style={styles.labelText}>{i18.t('text.borrowed_time')} </Text>
           </View>
           <TextInput
             value={date}
@@ -375,35 +389,35 @@ const FormRegister: React.FC<Props> = ({
             onChangeText={text => setDate(text)}
             style={styles.input}
           />
-          <Text style={styles.labelText}>tháng </Text>
+          <Text style={styles.labelText}>{i18.t('text.month')} </Text>
         </View>
         <View style={styles.menu}>
           <Text style={styles.menuId}>3</Text>
-          <Text style={styles.menuText}>Thông tin khác</Text>
+          <Text style={styles.menuText}>{i18.t('text.other_info')}</Text>
         </View>
         <View style={styles.formGroupText}>
           <View style={styles.labelContent}>
-            <Text style={styles.labelText}>Lựa chọn chi nhánh tư vấn </Text>
+            <Text style={styles.labelText}>
+              {i18.t('text.choosing_branch')}{' '}
+            </Text>
           </View>
           <View style={styles.checkboxContainer}>
             <CheckBox
-              title="Cùng khu vực với địa chỉ liên lạc"
+              title={i18.t('text.same_contacts')}
               value={isCheckedAddress}
               onValueChange={handleCheckboxChange}
             />
           </View>
           <TextInput
             value={date}
-            placeholder="Địa chỉ khác"
+            placeholder={i18.t('text.address_other')}
             onChangeText={text => setAddressBrand(text)}
             style={styles.input}
           />
         </View>
         <View style={styles.formGroupText}>
           <View style={styles.labelContent}>
-            <Text style={styles.labelText}>
-              Quý khách biết đến SP vay của BIDV từ kênh thông tin nào?
-            </Text>
+            <Text style={styles.labelText}>{i18.t('text.you_know_info')}</Text>
           </View>
           <View style={styles.checkboxContainer}>
             <CheckBox
@@ -430,7 +444,9 @@ const FormRegister: React.FC<Props> = ({
         <View style={styles.formGroupText}>
           <View style={styles.labelContent}>
             <View style={styles.labelContent}>
-              <Text style={styles.labelText}>Mã CAPTCHA (MÃ xác thực) </Text>
+              <Text style={styles.labelText}>
+                {i18.t('text.code_captcha')}{' '}
+              </Text>
               <Text style={styles.labelStar}>*</Text>
             </View>
           </View>
@@ -461,16 +477,16 @@ const FormRegister: React.FC<Props> = ({
             />
             <Pressable style={styles.contentTerm} onPress={handlePressTerm}>
               <Text style={styles.text}>
-                Tôi đồng ý với{' '}
-                <Text style={styles.highlightedText}>điều khoản điều kiện</Text>{' '}
-                đăng ký dịch vụ
+                {i18.t('text.my_agree')}{' '}
+                <Text style={styles.highlightedText}>{i18.t('text.term')}</Text>{' '}
+                {i18.t('text.service_register')}
               </Text>
             </Pressable>
           </View>
         </View>
       </ScrollView>
       <Pressable onPress={handleRegistration} style={styles.button}>
-        <Text style={styles.buttonText}>Đăng ký</Text>
+        <Text style={styles.buttonText}>{i18.t('text.register')}</Text>
       </Pressable>
       {isLoading && <Text>Loading...</Text>}
       {error && <Text>{error}</Text>}

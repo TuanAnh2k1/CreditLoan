@@ -1,6 +1,11 @@
 // store/actions.ts
 import {Dispatch} from 'redux';
-import {LOGIN_REQUEST, LOGIN_SUCCESS, LOGIN_FAILURE} from './actionTypes';
+import {
+  LOGIN_REQUEST,
+  LOGIN_SUCCESS,
+  LOGIN_FAILURE,
+  CHANGE_LANGUAGE,
+} from './actionTypes';
 import {LOGIN_URL} from '../../AppConstants/AppConstants';
 
 export const loginRequest = () => ({
@@ -15,6 +20,11 @@ export const loginSuccess = (user: any) => ({
 export const loginFailure = (error: string) => ({
   type: LOGIN_FAILURE,
   payload: error,
+});
+
+export const changeLanguage = (language: string) => ({
+  type: CHANGE_LANGUAGE,
+  payload: language,
 });
 
 export const login = (username: string, password: string) => {

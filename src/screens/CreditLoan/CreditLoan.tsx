@@ -3,10 +3,12 @@ import {StyleSheet, Text, View} from 'react-native';
 import Tabbar from '../../components/TabBar';
 import Loan from './Loan';
 import Profile from '../Profile/Profile';
+import i18n from '../../i18n';
+import {CARD, HOME, LOAN, PROFILE} from '../../AppConstants/AppConstants';
 
 const CreditLoan = (props: {navigation: any}) => {
   const {navigation} = props;
-  const [selectedTab, setSelectedTab] = useState('Trang chủ');
+  const [selectedTab, setSelectedTab] = useState(HOME);
 
   const handleTabChange = tab => {
     setSelectedTab(tab);
@@ -15,24 +17,24 @@ const CreditLoan = (props: {navigation: any}) => {
   return (
     <View style={styles.container}>
       {/* Content of your current tab */}
-      {selectedTab === 'Trang chủ' && <Loan navigation={navigation} />}
-      {selectedTab === 'Khoản vay' && (
+      {selectedTab === HOME && <Loan navigation={navigation} />}
+      {selectedTab === LOAN && (
         <View style={styles.tabContent}>
-          <Text>Content of Khoản vay</Text>
+          <Text>{i18n.t('text.content_of_loan')}</Text>
         </View>
       )}
-      {selectedTab === 'Thẻ' && (
+      {selectedTab === CARD && (
         <View style={styles.tabContent}>
-          <Text>Content of Thẻ</Text>
+          <Text>{i18n.t('text.content_of_card')}</Text>
         </View>
       )}
-      {selectedTab === 'Cá nhân' && <Profile navigation={navigation} />}
+      {selectedTab === PROFILE && <Profile navigation={navigation} />}
 
       {/* Tabbar */}
       <Tabbar
-        tabs={['Trang chủ', 'Khoản vay', 'Thẻ', 'Cá nhân']}
+        tabs={[HOME, LOAN, CARD, PROFILE]}
         icons={['home', 'credit_card', 'tags', 'user']}
-        initialTab="Trang chủ"
+        initialTab={HOME}
         onTabChange={handleTabChange}
       />
     </View>

@@ -1,10 +1,24 @@
 import React from 'react';
-import {StyleSheet, View, Text, Image, Pressable} from 'react-native';
+import {
+  StyleSheet,
+  View,
+  Text,
+  Image,
+  Pressable,
+  TouchableOpacity,
+} from 'react-native';
 import GetColors from '../../utils/CommonColors';
 import Swiper from 'react-native-swiper';
+import i18, {setI18nLanguage} from '../../i18n';
+import {useSelector, useDispatch} from 'react-redux';
+import {RootState} from '../../store';
+import {changeLanguage} from '../../store/actions/actions';
 
 const Loan = (props: {navigation: any}) => {
   const {navigation} = props;
+  const language = useSelector((state: RootState) => state.auth.language);
+  const dispatch = useDispatch();
+
   const handleEditInfo = () => {
     navigation.navigate('FormRegister');
   };
@@ -14,6 +28,18 @@ const Loan = (props: {navigation: any}) => {
   const handleSupport = () => {
     navigation.navigate('Support');
   };
+
+  const handleChangeLanguage = () => {
+    let newLanguage = language === 'en' ? 'vn' : 'en';
+    dispatch(changeLanguage(newLanguage));
+    setI18nLanguage({auth: {language: newLanguage}});
+  };
+
+  const buttonBackgroundColor =
+    language === 'vn' ? GetColors().MAIN : GetColors().REDNOTI;
+  const buttonTextColor =
+    language === 'vn' ? GetColors().WHITE : GetColors().BLACK900;
+
   return (
     <View style={styles.container}>
       <View style={styles.menuContainer}>
@@ -24,7 +50,7 @@ const Loan = (props: {navigation: any}) => {
               style={styles.imagePay}
             />
           </View>
-          <Text style={styles.textItem}>Vay Online</Text>
+          <Text style={styles.textItem}>{i18.t('text.online_loan')}</Text>
         </Pressable>
         <Pressable style={styles.itemMenu} onPress={handleLogin}>
           <View style={styles.viewImage}>
@@ -33,7 +59,7 @@ const Loan = (props: {navigation: any}) => {
               style={styles.imageOnline}
             />
           </View>
-          <Text style={styles.textItem}>Thanh toán</Text>
+          <Text style={styles.textItem}>{i18.t('text.pay')}</Text>
         </Pressable>
         <Pressable style={styles.itemMenu} onPress={handleSupport}>
           <View style={styles.viewImage}>
@@ -42,9 +68,20 @@ const Loan = (props: {navigation: any}) => {
               style={styles.imagePay}
             />
           </View>
-          <Text style={styles.textItem}>Hỗ trợ</Text>
+          <Text style={styles.textItem}>{i18.t('text.support')}</Text>
         </Pressable>
-        <View style={styles.itemMenu} />
+        <View style={styles.itemMenu}>
+          <TouchableOpacity
+            onPress={handleChangeLanguage}
+            style={[
+              styles.languageButton,
+              {backgroundColor: buttonBackgroundColor},
+            ]}>
+            <Text style={[styles.languageButtonText, {color: buttonTextColor}]}>
+              {language === 'en' ? 'VN' : 'EN'}
+            </Text>
+          </TouchableOpacity>
+        </View>
       </View>
       <View style={styles.slideShow}>
         <Swiper style={styles.wrapper} autoplay={true}>
@@ -69,7 +106,7 @@ const Loan = (props: {navigation: any}) => {
         </Swiper>
       </View>
       <View style={styles.questions}>
-        <Text style={styles.textQuestion}>Câu hỏi thường gặp</Text>
+        <Text style={styles.textQuestion}>{i18.t('text.ask_question')}</Text>
         <View style={styles.contentOther}>
           <Image
             source={require('../../assets/question.png')}
@@ -77,10 +114,9 @@ const Loan = (props: {navigation: any}) => {
           />
           <View>
             <Text style={styles.totalText}>
-              Tổng hợp những câu hỏi thắc mắc của khách hàng liên quan tới sản
-              phẩm và dịch vụ của Mcredit
+              {i18.t('text.all_ask_question')}
             </Text>
-            <Text style={styles.next}>Xem ngay</Text>
+            <Text style={styles.next}>{i18.t('text.watch_now')}</Text>
           </View>
         </View>
       </View>
@@ -162,8 +198,24 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  totalText: {paddingHorizontal: 16},
-  next: {paddingHorizontal: 16, color: '#0873ee', paddingVertical: 4},
+  totalText: {
+    paddingHorizontal: 16,
+  },
+  next: {
+    paddingHorizontal: 16,
+    color: '#0873ee',
+    paddingVertical: 4,
+  },
+  languageButton: {
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 20,
+    alignSelf: 'center',
+    marginTop: 20,
+  },
+  languageButtonText: {
+    fontSize: 16,
+  },
 });
 
 export default Loan;
