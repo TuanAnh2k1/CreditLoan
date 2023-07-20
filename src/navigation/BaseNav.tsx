@@ -2,7 +2,6 @@
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import {Provider} from 'react-redux';
-import {store} from '../actions';
 import Home from '../screens/Home/Home';
 import QRCodeInvite from '../screens/QrCode/QRCodeInvite';
 import Tutorial from '../screens/Tutorial/Tutorial';
@@ -13,8 +12,13 @@ import Loan from '../screens/CreditLoan/Loan';
 import FormRegister from '../screens/FormRegister/FormRegister';
 import LoginScreen from '../screens/LoginScreen';
 import Support from '../screens/Home/Support/Support';
+import {applyMiddleware, createStore} from 'redux';
+import rootReducer from '../store';
+import thunk from 'redux-thunk';
 
 const Stack = createStackNavigator();
+
+const store = createStore(rootReducer, applyMiddleware(thunk));
 
 function StackNavigator() {
   return (

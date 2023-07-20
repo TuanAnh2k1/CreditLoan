@@ -1,39 +1,32 @@
-import {initReactI18next} from 'react-i18next';
 import i18next from 'i18next';
-
+import {initReactI18next} from 'react-i18next';
+import {RootState} from '../store';
 import en from './locates/en';
-import jp from './locates/ja';
-import {getLanguage} from '../utils/store';
-const DEFAULT_LANG = 'jp';
+import vn from './locates/vn';
 
-// export const getLanguage = (): string => {
-//   const lan = getLocales();
-//   try {
-//     const primaryLocate = lan[0];
-//     return primaryLocate.languageCode;
-//   } catch (error) {
-//     return DEFAULT_LANG;
-//   }
-// };
+const i18n = i18next.createInstance();
 
-i18next.use(initReactI18next).init({
+i18n.use(initReactI18next).init({
   interpolation: {
-    // React already does escaping
     escapeValue: false,
   },
   compatibilityJSON: 'v3',
-  lng: getLanguage(),
+  lng: 'vn', // Change default language here
   debug: true,
-  fallbackLng: DEFAULT_LANG,
-  // Using simple hardcoded resources for simple example
+  fallbackLng: 'vn', // Change default language here
   resources: {
     en: {
       translation: en,
     },
-    jp: {
-      translation: jp,
+    vn: {
+      translation: vn,
     },
   },
 });
 
-export default i18next;
+export const setI18nLanguage = (state: RootState) => {
+  const language = state.auth.language;
+  i18n.changeLanguage(language || 'vn');
+};
+
+export default i18n;
