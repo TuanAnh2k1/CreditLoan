@@ -15,6 +15,7 @@ import thunk from 'redux-thunk';
 import rootReducer from './store';
 import Mainnavigator from './navigation/BaseNav';
 import Splash from './components/Splash';
+import NetworkStatus from './components/NetworkStatus';
 
 const store = createStore(rootReducer, applyMiddleware(thunk));
 
@@ -31,6 +32,7 @@ const App = () => {
   // }
   return (
     <Provider store={store}>
+      <NetworkStatus />
       <Mainnavigator></Mainnavigator>
     </Provider>
   );
