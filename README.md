@@ -39,6 +39,14 @@ Một số loại type thường dùng:
 1. `fix` : Sử dụng khi thực hiện fix bug.
    Ví dụ: `git commit -m "fix(js): fix create appliance don't search"`
 
-Run unittest
+- Commit code như sau
+  tên nhánh: tên/đuôi task
+  vd: anhdt/SQBTAU0w
+  tên commit: đuôi task: nội dung commit
+
+- tên pull request thì như sau
+  ngày/đuôi task
+  vd 20230714/SQBTAU0w
+  Run unittest
 
 - yarn test

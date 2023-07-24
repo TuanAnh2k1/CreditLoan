@@ -8,29 +8,26 @@
  * @format
  */
 
-import React from 'react';
+import React, {useEffect} from 'react';
 import {Provider} from 'react-redux';
 import {createStore, applyMiddleware} from 'redux';
 import thunk from 'redux-thunk';
 import rootReducer from './store';
 import Mainnavigator from './navigation/BaseNav';
-import Splash from './components/Splash';
+import NetworkStatus from './components/NetworkStatus';
+import {setI18nLanguage} from './i18n';
 
 const store = createStore(rootReducer, applyMiddleware(thunk));
 
 const App = () => {
-  // useEffect(() => {
-  //   // Simulate an asynchronous task
-  //   setTimeout(() => {
-  //     setIsLoading(false);
-  //   }, 3000); // Thay thế giá trị 3000 bằng thời gian bạn muốn hiển thị màn hình Splash
-  // }, []);
+  useEffect(() => {
+    const state = store.getState();
+    setI18nLanguage(state);
+  }, []);
 
-  // if (isLoading) {
-  //   return <Splash />;
-  // }
   return (
     <Provider store={store}>
+      <NetworkStatus />
       <Mainnavigator></Mainnavigator>
     </Provider>
   );
