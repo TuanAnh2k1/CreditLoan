@@ -1,10 +1,17 @@
-import {validateName} from '../Validate/ValidationFunctions';
-import {validateID} from '../Validate/ValidationFunctions';
-import {normalizeAddress} from '../Validate/ValidationFunctions';
-import {normalizePhoneNumber} from '../Validate/ValidationFunctions';
-import {validateEmail} from '../Validate/ValidationFunctions';
-import {validateProfession} from '../Validate/DropdownFunctions';
-import {validateIncomeLevel} from '../Validate/DropdownFunctions';
+import {
+  validateAmount,
+  validateDuration,
+  validateName,
+  validateID,
+  normalizeAddress,
+  normalizePhoneNumber,
+  validateEmail,
+} from '../Validate/ValidationFunctions';
+import {
+  validItemsProduct,
+  validateIncomeLevel,
+  validateProfession,
+} from '../Validate/DropdownFunctions';
 
 describe('Form Validation', () => {
   it('should validate the "Họ và tên" field', () => {
@@ -59,5 +66,29 @@ describe('Form Validation', () => {
 
     expect(validateIncomeLevel(validIncomeLevel)).toBe(true);
     expect(validateIncomeLevel(invalidIncomeLevel)).toBe(false);
+  });
+
+  it('should validate the selected "Sản phẩm vay" from dropdown', () => {
+    const validItemProduct = 'Sản phẩm cho vay nhu cầu nhà ở';
+    const invalidItemProduct = 'Sản phẩm nhu cầu nhà ở';
+
+    expect(validItemsProduct(validItemProduct)).toBe(true);
+    expect(validItemsProduct(invalidItemProduct)).toBe(false);
+  });
+
+  it('should validate the loan amount', () => {
+    const validAmount = '5000000'; // Valid loan amount in VNĐ
+    const invalidAmount = 'ABC123'; // Invalid loan amount
+
+    expect(validateAmount(validAmount)).toBe(true);
+    expect(validateAmount(invalidAmount)).toBe(false);
+  });
+
+  it('should validate the loan duration', () => {
+    const validDuration = '12'; // Valid loan duration in months
+    const invalidDuration = 'ABC123'; // Invalid loan duration
+
+    expect(validateDuration(validDuration)).toBe(true);
+    expect(validateDuration(invalidDuration)).toBe(false);
   });
 });
