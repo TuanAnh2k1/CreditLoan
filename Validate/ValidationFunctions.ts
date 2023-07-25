@@ -4,6 +4,8 @@ export const NAME_REGEX = /^[a-zA-Z ]+$/;
 export const ID_REGEX = /^\d+$/;
 export const PHONE_REGEX = /\s/g;
 export const EMAIL_REGEX = /^\S+@\S+\.\S+$/;
+export const AMOUNT_REGEX = /^\d+$/;
+export const DURATION_REGEX = /^\d+$/;
 
 export function validateName(name: string): boolean {
   return NAME_REGEX.test(name);
@@ -23,4 +25,12 @@ export function normalizePhoneNumber(phoneNumber: string): string {
 
 export function validateEmail(email: string): boolean {
   return EMAIL_REGEX.test(email);
+}
+
+export function validateAmount(amount: string): boolean {
+  return AMOUNT_REGEX.test(amount);
+}
+
+export function validateDuration(duration: string): boolean {
+  return DURATION_REGEX.test(duration);
 }
