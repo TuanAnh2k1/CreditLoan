@@ -20,14 +20,29 @@ import {RootState} from '../../store';
 import {register} from '../../store/actions/formActions';
 import {TERM_URL} from '../../AppConstants/AppConstants';
 import i18 from '../../i18n';
+import {getProfessions} from '../../store/actions/occupationActions';
+import {getIncome} from '../../store/actions/incomeActions';
+import {getProduct} from '../../store/actions/productActions';
+import {getChannel} from '../../store/actions/channelAction';
 
-const connector = connect(
-  (state: RootState) => ({
-    isLoading: state.registration.isLoading,
-    error: state.registration.error,
-  }),
-  {register},
-);
+const mapStateToProps = (state: RootState) => ({
+  isLoading: state.registration.isLoading,
+  error: state.registration.error,
+  itemsOccupation: state.occupation.data,
+  itemsIncome: state.income.data,
+  itemsProduct: state.product.data,
+  itemsChannel: state.channel.data,
+});
+
+const mapDispatchToProps = {
+  register,
+  getProfessions,
+  getIncome,
+  getProduct,
+  getChannel,
+};
+
+const connector = connect(mapStateToProps, mapDispatchToProps);
 
 type PropsFromRedux = ConnectedProps<typeof connector>;
 
@@ -40,6 +55,14 @@ const FormRegister: React.FC<Props> = ({
   isLoading,
   error,
   register,
+  itemsOccupation,
+  getProfessions,
+  itemsIncome,
+  getIncome,
+  itemsProduct,
+  getProduct,
+  itemsChannel,
+  getChannel,
 }) => {
   const [prefix, setPrefix] = useState('');
   const [fullName, setFullName] = useState('');
@@ -55,9 +78,7 @@ const FormRegister: React.FC<Props> = ({
   const [date, setDate] = useState('');
   const [code, setCode] = useState('');
   const [isCheckedAddress, setIsCheckedAddress] = useState(false);
-  const [isCheckedInternet, setIsCheckedInternet] = useState(false);
-  const [isCheckedSMS, setIsCheckedSMS] = useState(false);
-  const [isCheckedTelevision, setIsCheckedTelevision] = useState(false);
+
   const [isCheckedTerm, setIsCheckedTerm] = useState(false);
 
   //check isNull
@@ -86,6 +107,10 @@ const FormRegister: React.FC<Props> = ({
 
   useEffect(() => {
     LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
+    getProfessions();
+    getIncome();
+    getProduct();
+    getChannel();
   }, []);
 
   const [itemsPrefix, setItemsPrefix] = useState([
@@ -94,28 +119,13 @@ const FormRegister: React.FC<Props> = ({
   ]);
   const [openPrefix, setOpenPrefix] = useState(false);
 
-  const [itemsOccupation, setItemsOccupation] = useState([
-    {label: 'Lập trình viên', value: 'developer'},
-    {label: 'Kỹ sư', value: 'engineer'},
-    {label: 'Giáo viên', value: 'teacher'},
-  ]);
   const [openOccupation, setOpenOccupation] = useState(false);
 
-  const [itemsIncome, setItemsIncome] = useState([
-    {label: 'Dưới 5 triệu', value: 'under_5m'},
-    {label: 'Từ 5 triệu đến 10 triệu', value: '5m_to_10m'},
-    {label: 'Trên 10 triệu', value: 'above_10m'},
-  ]);
   const [openIncome, setOpenIncome] = useState(false);
 
-  const [itemsProducts, setItemsProducts] = useState([
-    {label: 'Sản phẩm cho vay nhu cầu nhà ở', value: '1'},
-    {label: 'Sản phẩm cho vay sản xuất kinh doanh', value: '2'},
-    {label: 'Sản phẩm cho vay mua ô tô', value: '3'},
-    {label: 'Sản phẩm cho vay bằng bất dộng sản', value: '4'},
-    {label: 'Sản phẩm cho vay tiêu dùng không có tài sản nào', value: '5'},
-  ]);
   const [openProducts, setOpenProducts] = useState(false);
+
+  const [checkedItems, setCheckedItems] = useState({});
 
   const handleRegistration = () => {
     switch (true) {
@@ -144,18 +154,6 @@ const FormRegister: React.FC<Props> = ({
     setIsCheckedAddress(!isCheckedAddress);
   };
 
-  const handleChangeInternet = () => {
-    setIsCheckedInternet(!isCheckedInternet);
-  };
-
-  const handleChangeSMS = () => {
-    setIsCheckedSMS(!isCheckedSMS);
-  };
-
-  const handleChangeTelevision = () => {
-    setIsCheckedTelevision(!isCheckedTelevision);
-  };
-
   const handleChangeTerm = () => {
     setIsCheckedTerm(!isCheckedTerm);
   };
@@ -168,6 +166,13 @@ const FormRegister: React.FC<Props> = ({
     }
 
     return Linking.openURL(url);
+  };
+
+  const handleCheckboxChangeChannel = (value: any, checked: any) => {
+    setCheckedItems(prevState => ({
+      ...prevState,
+      [value]: checked,
+    }));
   };
 
   return (
@@ -209,7 +214,7 @@ const FormRegister: React.FC<Props> = ({
               setFullName(text);
               setIsFullNameValid(!_.isEmpty(text.trim()));
             }}
-            placeholder={i18.t('text.input_full_name')}
+            placeholder={i18.t('text.full_name')}
             style={[styles.input, !isFullNameValid && styles.invalidInput]}
           />
           {!isFullNameValid && (
@@ -322,7 +327,6 @@ const FormRegister: React.FC<Props> = ({
             value={occupation}
             items={itemsOccupation}
             setValue={setOccupation}
-            setItems={setItemsOccupation}
             setOpen={setOpenOccupation}
           />
         </View>
@@ -341,7 +345,6 @@ const FormRegister: React.FC<Props> = ({
             value={income}
             items={itemsIncome}
             setValue={setIncome}
-            setItems={setItemsIncome}
             setOpen={setOpenIncome}
           />
         </View>
@@ -359,9 +362,8 @@ const FormRegister: React.FC<Props> = ({
             placeholder={i18.t('text.choose')}
             open={openProducts}
             value={products}
-            items={itemsProducts}
+            items={itemsProduct}
             setValue={setProducts}
-            setItems={setItemsProducts}
             setOpen={setOpenProducts}
           />
         </View>
@@ -419,27 +421,17 @@ const FormRegister: React.FC<Props> = ({
           <View style={styles.labelContent}>
             <Text style={styles.labelText}>{i18.t('text.you_know_info')}</Text>
           </View>
-          <View style={styles.checkboxContainer}>
-            <CheckBox
-              title="Internet"
-              value={isCheckedInternet}
-              onValueChange={handleChangeInternet}
-            />
-          </View>
-          <View style={styles.checkboxContainer}>
-            <CheckBox
-              title="Tin nhắn SMS"
-              value={isCheckedSMS}
-              onValueChange={handleChangeSMS}
-            />
-          </View>
-          <View style={styles.checkboxContainer}>
-            <CheckBox
-              title="Tivi/Radio"
-              value={isCheckedTelevision}
-              onValueChange={handleChangeTelevision}
-            />
-          </View>
+          {itemsChannel.map((item: any) => (
+            <View key={item.value} style={styles.checkboxContainer}>
+              <CheckBox
+                title={item.label}
+                value={checkedItems[item.value]}
+                onValueChange={checked =>
+                  handleCheckboxChangeChannel(item.value, checked)
+                }
+              />
+            </View>
+          ))}
         </View>
         <View style={styles.formGroupText}>
           <View style={styles.labelContent}>
