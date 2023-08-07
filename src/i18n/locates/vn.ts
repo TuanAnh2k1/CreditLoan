@@ -7,6 +7,7 @@ export default {
     networkError: 'Không có kết nối Internet.',
     requestTimeout:
       'Không có phản hồi từ máy chủ. Đợi một lúc rồi thử thao tác lại.',
+    confirm_term: 'Bạn phải đồng ý điều khoản đăng ký dịch vụ',
   },
   text: {
     online_loan: 'Vay Online',
