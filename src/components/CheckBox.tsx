@@ -3,7 +3,7 @@ import {TouchableOpacity, View, Text, StyleSheet} from 'react-native';
 
 const CheckBox = ({title, value, onValueChange}) => {
   const handleCheckboxToggle = () => {
-    onValueChange(value);
+    onValueChange(!value);
   };
 
   return (

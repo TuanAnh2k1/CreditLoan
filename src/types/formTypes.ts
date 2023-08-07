@@ -35,3 +35,9 @@ export interface FormState {
   error: string;
   successMessage: string;
 }
+
+export interface DropdownState {
+  isLoading: boolean;
+  data: any[];
+  error: string | null;
+}
