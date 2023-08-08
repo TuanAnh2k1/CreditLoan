@@ -8,6 +8,8 @@ import {
   Pressable,
   LogBox,
   Linking,
+  Alert,
+  ActivityIndicator,
 } from 'react-native';
 import _ from 'lodash';
 import DropDownPicker from 'react-native-dropdown-picker';
@@ -89,22 +91,6 @@ const FormRegister: React.FC<Props> = ({
   const [isPhoneNumber, setIsPhoneNumber] = useState(true);
   const [isEmail, setIsEmail] = useState(true);
 
-  //data
-  const [formData, setFormData] = useState({
-    fullName: '',
-    identification: '',
-    address: '',
-    phoneNumber: '',
-    email: '',
-    occupation: '',
-    income: '',
-    products: '',
-    price: '',
-    date: '',
-    isCheckedAddress: false,
-    isCheckedTerm: false,
-  });
-
   useEffect(() => {
     LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
     getProfessions();
@@ -129,6 +115,9 @@ const FormRegister: React.FC<Props> = ({
 
   const handleRegistration = () => {
     switch (true) {
+      case !isCheckedTerm:
+        Alert.alert(i18.t('message.confirm_term'));
+        break;
       case _.isEmpty(fullName):
         setIsFullNameValid(false);
         break;
@@ -145,7 +134,23 @@ const FormRegister: React.FC<Props> = ({
         setIsEmail(false);
         break;
       default:
+        const formData = {
+          hoten: fullName,
+          cmnd: identification,
+          diachi: address,
+          tel: phoneNumber,
+          email: email,
+          nghenghiep: occupation,
+          thunhap: income,
+          sanphamchovay: products,
+          tienvay: price,
+          chinhanh: isCheckedAddress ? address : addressBranch,
+          thoigianchovay: date,
+          kenhvay: Object.keys(checkedItems)[0],
+        };
+
         register(formData);
+        navigation.goBack();
         break;
     }
   };
@@ -168,11 +173,12 @@ const FormRegister: React.FC<Props> = ({
     return Linking.openURL(url);
   };
 
-  const handleCheckboxChangeChannel = (value: any, checked: any) => {
-    setCheckedItems(prevState => ({
-      ...prevState,
-      [value]: checked,
-    }));
+  const handleCheckboxChangeChannel = (value: any, checked: boolean) => {
+    if (checked) {
+      setCheckedItems({[value]: true});
+    } else {
+      setCheckedItems({});
+    }
   };
 
   return (
@@ -410,12 +416,20 @@ const FormRegister: React.FC<Props> = ({
               onValueChange={handleCheckboxChange}
             />
           </View>
-          <TextInput
-            value={date}
-            placeholder={i18.t('text.address_other')}
-            onChangeText={text => setAddressBrand(text)}
-            style={styles.input}
-          />
+          {!isCheckedAddress ? (
+            <TextInput
+              value={addressBranch}
+              placeholder={i18.t('text.address_other')}
+              onChangeText={text => setAddressBrand(text)}
+              style={styles.input}
+            />
+          ) : (
+            <TextInput
+              placeholder={i18.t('text.address_other')}
+              style={styles.input}
+              editable={false}
+            />
+          )}
         </View>
         <View style={styles.formGroupText}>
           <View style={styles.labelContent}>
@@ -478,10 +492,12 @@ const FormRegister: React.FC<Props> = ({
         </View>
       </ScrollView>
       <Pressable onPress={handleRegistration} style={styles.button}>
-        <Text style={styles.buttonText}>{i18.t('text.register')}</Text>
+        {isLoading ? (
+          <ActivityIndicator size="small" color="white" />
+        ) : (
+          <Text style={styles.buttonText}>{i18.t('text.register')}</Text>
+        )}
       </Pressable>
-      {isLoading && <Text>Loading...</Text>}
-      {error && <Text>{error}</Text>}
     </>
   );
 };

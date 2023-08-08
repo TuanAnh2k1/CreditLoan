@@ -7,6 +7,7 @@ export default {
     networkError: 'No Internet connection.',
     requestTimeout:
       'No response from the server. Wait a while and then try the operation again.',
+    confirm_term: 'You must agree to the service registration terms',
   },
   text: {
     online_loan: 'Online Loan',
